@@ -1,0 +1,10 @@
+{
+    "steps_count": 229,
+    "fall_detected": {
+        "status": true,
+        "detected_time": {
+            "date": "2024-10-11",
+            "time": "16:24:58"
+        }
+    }
+}
