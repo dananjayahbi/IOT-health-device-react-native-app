@@ -12,7 +12,16 @@ def ensure_file_exists():
     """Ensure the JSON file exists; if not, create it with default values."""
     if not os.path.exists(DATA_FILE):
         logging.info(f"{DATA_FILE} does not exist. Creating a new file with default values.")
-        default_data = {"steps_count": 0, "fall_detected": False}
+        default_data = {
+            "steps_count": 0,
+            "fall_detected": {
+                "status": False,
+                "detected_time": {
+                    "date": None,
+                    "time": None
+                }
+            }
+        }
         write_data(default_data["steps_count"], default_data["fall_detected"])  # Create file with default values
 
 def read_data():
@@ -26,13 +35,22 @@ def read_data():
             return data
     except Exception as e:
         logging.error(f"Error reading data from {DATA_FILE}: {e}")
-        return {"steps_count": 0, "fall_detected": False}  # Return default data in case of error
+        return {
+            "steps_count": 0,
+            "fall_detected": {
+                "status": False,
+                "detected_time": {
+                    "date": None,
+                    "time": None
+                }
+            }
+        }  # Return default data in case of error
 
 def write_data(steps_count, fall_detected):
     """Write data to the JSON file."""
     data = {
         "steps_count": steps_count,
-        "fall_detected": fall_detected
+        "fall_detected": fall_detected  # Accept the entire fall_detected object
     }
 
     try:

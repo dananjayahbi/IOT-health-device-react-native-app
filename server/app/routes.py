@@ -1,17 +1,21 @@
 # app/routes.py
 from flask import Blueprint, jsonify
+
 from .data_handler import read_data  # Import the function to read from JSON
 
+# Initialize a Blueprint for routes
 api = Blueprint('api', __name__)
 
-@api.route('/api/steps', methods=['GET'])
-def get_steps():
-    """Get the latest step count."""
-    data = read_data()  # Fetch from JSON
-    return jsonify({"steps_count": data['steps_count']})
+# A test route
+@api.route('/')
+def hello():
+    return "Hello, World!"
 
-@api.route('/api/fall', methods=['GET'])
-def get_fall_detection():
-    """Get the latest fall detection status."""
+# Route to get the current status including step count and fall detection
+@api.route('/api/status', methods=['GET'])
+def get_status():
+    """Get the current status including step count and fall detection."""
     data = read_data()  # Fetch from JSON
-    return jsonify({"fall_detected": data['fall_detected']})
+    return jsonify(data), 200  # Return the complete data object with a 200 status
+
+# If you want to include other endpoints, you can add them here
