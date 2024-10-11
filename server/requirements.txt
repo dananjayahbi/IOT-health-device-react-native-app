@@ -1,0 +1,4 @@
+Flask==2.2.2
+Adafruit-IO==2.5.3
+pytz==2023.3
+python-dotenv==1.0.0
