@@ -2,7 +2,7 @@ import mqtt from 'mqtt/dist/mqtt';
 import { sendFallNotification } from './notifications';
 
 const AIO_USERNAME = 'dananjayahbi';
-const AIO_KEY = 'aio_bpmw48wGqMrhQUUw14nFYzPwUjFC';
+const AIO_KEY = '';
 const STEPS_FEED = `${AIO_USERNAME}/f/step-count`;
 const FALL_FEED = `${AIO_USERNAME}/f/fall-detection`;
 
