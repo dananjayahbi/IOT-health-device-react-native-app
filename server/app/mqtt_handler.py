@@ -1,19 +1,16 @@
 # app/mqtt_handler.py
 import json
+import logging
 from Adafruit_IO import MQTTClient
-from flask import current_app
+from .data_handler import read_data, write_data  # Import the new functions
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Define your Adafruit IO credentials
-ADAFRUIT_IO_KEY = 'aio_IGEh551C6e6EleOhzqIpJEcaB9nm'  # Replace with your actual key
+ADAFRUIT_IO_KEY = 'aio_YWsY56ZhamMVPPXIIcsHjfDP7P1F'  # Replace with your actual key
 ADAFRUIT_IO_USERNAME = 'dananjayahbi'  # Replace with your actual username
 
-# Data storage
-data = {
-    "steps_count": 0,
-    "fall_detected": False
-}
-
-# Define callback functions which will be called when certain events happen.
 def connected(client):
     """Called when the client connects to Adafruit IO."""
     print('Connected to Adafruit IO! Listening for feed changes...')
@@ -23,19 +20,38 @@ def connected(client):
 def disconnected(client):
     """Called when the client disconnects."""
     print('Disconnected from Adafruit IO!')
-    client.loop_stop()  # Stop the loop
 
 def message(client, feed_id, payload):
     """Called when a subscribed feed has a new value."""
-    print(f'Feed {feed_id} received new value: {payload}')
     payload = json.loads(payload)
     
-    if feed_id == 'step-count/json':
-        data['steps_count'] = payload['value']
-        print(f"Step count updated: {data['steps_count']}")
-    elif feed_id == 'fall-detection/json':
-        data['fall_detected'] = payload['value'] == "true"
-        print(f"Fall detected: {data['fall_detected']}")
+    # Print the entire payload for debugging
+    # print("Received payload:", payload)
+
+    # Print the last value received
+    last_value = payload.get('last_value', 'N/A')
+    # print(f"New value: {last_value}")
+
+    # Extract values based on feed_id
+    if feed_id == 'step-count':
+        try:
+            steps_count = int(last_value)  # Convert to integer directly from last_value
+            print(f"Step count updated: {steps_count}")
+
+            # Write the updated step count and read fall detection status
+            data = read_data()  # Read current data
+            write_data(steps_count, data['fall_detected'])  # Write updated step count
+        except ValueError:
+            print(f"Error converting last_value to int: {last_value}")
+
+    elif feed_id == 'fall-detection':
+        fall_detected = last_value == "Fall Detected"
+        print(f"Fall detected: {fall_detected}")
+
+        # Write the updated fall detection status and read step count
+        data = read_data()  # Read current data
+        write_data(data['steps_count'], fall_detected)  # Write updated fall detection status
+
 
 def start_mqtt_client():
     """Start the MQTT client."""
