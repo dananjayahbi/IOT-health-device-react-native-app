@@ -1,0 +1,10 @@
+{
+    "steps_count": 48,
+    "fall_detected": {
+        "status": false,
+        "detected_time": {
+            "date": null,
+            "time": null
+        }
+    }
+}
