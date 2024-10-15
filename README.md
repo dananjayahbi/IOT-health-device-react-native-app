@@ -1,1 +1,1 @@
-# IOT-health-device-react-native-app
+# IOT-health-device-flask-backend
