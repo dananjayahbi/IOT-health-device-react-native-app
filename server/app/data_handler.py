@@ -4,7 +4,7 @@ import os
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 DATA_FILE = 'app/data.json'  # Path to the data.json file
 
@@ -31,7 +31,7 @@ def read_data():
     try:
         with open(DATA_FILE, 'r') as file:
             data = json.load(file)
-            logging.info(f"Data read successfully: {data}")
+            # logging.info(f"Data read successfully: {data}")
             return data
     except Exception as e:
         logging.error(f"Error reading data from {DATA_FILE}: {e}")
@@ -56,6 +56,6 @@ def write_data(steps_count, fall_detected):
     try:
         with open(DATA_FILE, 'w') as file:
             json.dump(data, file, indent=4)  # Directly write the data
-            logging.info(f"Data written successfully to {DATA_FILE}: {data}")
+            # logging.info(f"Data written successfully to {DATA_FILE}: {data}")
     except Exception as e:
         logging.error(f"Error writing data to {DATA_FILE}: {e}")
